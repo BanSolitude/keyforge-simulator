@@ -34,12 +34,12 @@ class Controller():
 
     def play_and_use_cards(self):
         pass
-    
+
     def first_turn_play(self):
         for card in self.player.state.hand:
             if card.house == self.player.activeHouse:
                 self.player.play_card(card, leftFlank=True)
         self.player.ready_cards()
-    
+
     def first_turn_house_decision(self):
         return self.house_decision()
