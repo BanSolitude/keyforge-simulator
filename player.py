@@ -96,13 +96,13 @@ class Player():
             raise ValueError("Creature must be of active house to use")
 
     def damage(self, creature, amount):
-        if not creature in self.get_battleline():
+        if not creature in self.state.battleline:
             raise ValueError("Must control creature to damage it.")
 
         creature.take_damage(amount)
-        if creature.damage > creature.power:
-            self.get_battleline().remove(creature)
-            self.discard.push(creature)
+        if creature.damage >= creature.power:
+            self.state.battleline.remove(creature)
+            self.state.discard.insert(0,creature)
 
 class PlayerState():
     def __init__(self, deck):
