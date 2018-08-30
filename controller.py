@@ -24,10 +24,22 @@ class Controller():
         self.player.refill_hand()
 
     def first_turn(self):
-        pass
+        self.player.state.draw(1)
+        self.player.choose_house(self.first_turn_house_decision())
+        self.first_turn_play()
 
     def house_decision(self):
-        pass
+        for house in self.deckHouses:
+            return house
 
     def play_and_use_cards(self):
         pass
+    
+    def first_turn_play(self):
+        for card in self.player.state.hand:
+            if card.house == self.player.activeHouse:
+                self.player.play_card(card, leftFlank=True)
+        self.player.ready_cards()
+    
+    def first_turn_house_decision(self):
+        return self.house_decision()
