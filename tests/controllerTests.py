@@ -1,6 +1,8 @@
 from tests.keyforgeTest import *
 from controller import *
 
+DECK_HOUSES = [House.BROBNAR, House.DIS, House.LOGOS]
+
 class ControllerTests(KeyforgeTest):
     def setUp(self):
         super().setUp() #maybe?
@@ -8,7 +10,7 @@ class ControllerTests(KeyforgeTest):
         self.controller = Controller(self.mockPlayer)
 
     def test_takeTurn_appropriateFunctionsCalled(self):
-        shouldCall = set(Steps.FORGE, Steps.CHOOSE, Steps.READY, Steps.DRAW)
+        shouldCall = set([Steps.FORGE, Steps.CHOOSE, Steps.READY, Steps.DRAW])
         self.controller.turn()
         selfAssertEqual(self.mockPlayer.called, shouldCall)
 
@@ -22,11 +24,12 @@ class ControllerTests(KeyforgeTest):
 
     def test_takeTurn_selectsAppropriateHouse(self):
         self.controller.turn()
-        self.assertIn(self.mockPlayer.selectedHouse, self.appropriateHouses)
+        self.assertIn(self.mockPlayer.selectedHouse, DECK_HOUSES)
 
 class MockPlayer():
     def __init__(self):
         self.reset()
+        self.state = MockState()
 
     def forge_key(self):
         self.called.add(Steps.FORGE)
@@ -43,3 +46,9 @@ class MockPlayer():
     def reset(self):
         self.called = set()
         self.cardsPlayed = 0
+
+class MockState():
+    def __init__(self):
+        self.deck = []
+        for house in DECK_HOUSES:
+            self.deck.append(Card(house))

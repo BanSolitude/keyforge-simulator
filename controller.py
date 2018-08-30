@@ -12,16 +12,19 @@ class Controller():
         self.player = player
         self.deckHouses = set()
         for card in self.player.state.deck:
-             self.deckHouse.add(card.house)
-             if len(self.deckHouse) == 3:
+             self.deckHouses.add(card.house)
+             if len(self.deckHouses) == 3:
                  break
 
     def turn(self):
         self.player.forge_key()
-        self.player.select_house(self.house_decision())
+        self.player.choose_house(self.house_decision())
         self.play_and_use_cards()
         self.player.ready_cards()
         self.player.refill_hand()
+
+    def first_turn(self):
+        pass
 
     def house_decision(self):
         pass

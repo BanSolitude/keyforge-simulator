@@ -34,7 +34,7 @@ if __name__ == '__main__':
         activePlayer.forge_key()
         if activePlayer.state.keys >= 3:
             break
-        activePlayer.select_house(House.BROBNAR)
+        activePlayer.choose_house(House.BROBNAR)
 
         for creature in activePlayer.state.battleline:
             activePlayer.reap(creature)

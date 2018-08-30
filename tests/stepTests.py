@@ -43,7 +43,7 @@ class ForgeKeyTests(KeyforgeTest):
 
 class SelectHouseTest(KeyforgeTest):
     def test_selectHouse_selectedHouseIsActive(self):
-        self.player.select_house(TEST_HOUSE)
+        self.player.choose_house(TEST_HOUSE)
         self.assertEqual(self.player.get_active_house(), TEST_HOUSE)
 
 class ReadyCardsTest(KeyforgeTest):

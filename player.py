@@ -35,8 +35,8 @@ class Player():
     def get_active_house(self):
         return self.state.activeHouse
 
-    def select_house(self, house):
-        self.state.select_house(house)
+    def choose_house(self, house):
+        self.state.choose_house(house)
 
     def get_hand(self):
         return self.state.hand
@@ -126,7 +126,7 @@ class PlayerState():
 
         self.amber -= amount
 
-    def select_house(self, house):
+    def choose_house(self, house):
         #check if house is valid
         self.activeHouse = house
 
