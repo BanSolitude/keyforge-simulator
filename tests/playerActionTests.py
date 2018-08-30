@@ -35,16 +35,19 @@ class PlayCardsTest(KeyforgeTest):
         pass
 
 class DamageTest(KeyforgeTest):
+    def setUp(self):
+        super().setUp()
+        self.player.state.battleline.add(self.creature, leftFlank=True)
+        
     def test_damageCreatureEqualToPower_creatureIsRemovedFromBattleline(self):
         self.player.damage(self.creature, self.creature.power)
-        self.assertNotIn(self.creature, self.Battleline)
+        self.assertNotIn(self.creature, self.player.state.battleline)
 
     def test_damageCreatureEqualToPower_creatureIsMovedToDiscard(self):
         self.player.damage(self.creature, self.creature.power)
-        self.assertIn(self.creature, self.player.discard)
+        self.assertIn(self.creature, self.player.state.discard)
 
-#TODO put this in a seperate class with different setup
     def test_damamageCreatureNotOnBattleline_raisesExcepiton(self):
         #TODO right exception?
         with self.assertRaises(ValueError):
-            self.player.damage(creature, 1)
+            self.player.damage(Creature(TEST_HOUSE), 1)
