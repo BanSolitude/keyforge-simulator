@@ -12,7 +12,7 @@ class ControllerTests(KeyforgeTest):
     def test_takeTurn_appropriateFunctionsCalled(self):
         shouldCall = set([Steps.FORGE, Steps.CHOOSE, Steps.READY, Steps.DRAW])
         self.controller.turn()
-        selfAssertEqual(self.mockPlayer.called, shouldCall)
+        self.assertEqual(self.mockPlayer.called, shouldCall)
 
     def test_firstTurn_onlyOneCardPlayed(self):
         self.controller.first_turn()
@@ -24,7 +24,7 @@ class ControllerTests(KeyforgeTest):
 
     def test_takeTurn_selectsAppropriateHouse(self):
         self.controller.turn()
-        self.assertIn(self.mockPlayer.selectedHouse, DECK_HOUSES)
+        self.assertIn(self.mockPlayer.house, DECK_HOUSES)
 
 class MockPlayer():
     def __init__(self):
@@ -34,8 +34,9 @@ class MockPlayer():
     def forge_key(self):
         self.called.add(Steps.FORGE)
 
-    def choose_house(self):
+    def choose_house(self, house):
         self.called.add(Steps.CHOOSE)
+        self.house = house
 
     def ready_cards(self):
         self.called.add(Steps.READY)
