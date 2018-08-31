@@ -115,6 +115,9 @@ class PlayerState():
         self.hand = []
         self.discard = []
         self.activeHouse = None
+        
+        shuffle(self.deck)
+        self.draw(6)
 
     def remove_amber(self, amount):
         if amount < 0:

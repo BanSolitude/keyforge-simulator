@@ -1,57 +1,50 @@
 from state import State
 from cards import Action, Creature, House
-from copy import deepcopy
-from random import shuffle
-
-#TODO Controllers that handle the decision making each turn
-#TODO Handle first turn correctly
-#TODO Decks that aren't all one House
-#TODO Select house in some smart way
+from controller import MaxCardsController
 
 if __name__ == '__main__':
     deck = []
-    for i in range(18):
+    for i in range(6):
         deck.append(Action(House.BROBNAR, 1))
+        deck.append(Action(House.DIS, 1))
+        deck.append(Action(House.LOGOS, 1))
         deck.append(Creature(House.BROBNAR))
-
-    print(deck)
+        deck.append(Creature(House.DIS))
+        deck.append(Creature(House.LOGOS))
 
     deckTwo = []
-    for i in range(18):
+    for i in range(6):
         deckTwo.append(Action(House.BROBNAR, 1))
+        deckTwo.append(Action(House.DIS, 1))
+        deckTwo.append(Action(House.LOGOS, 1))
         deckTwo.append(Creature(House.BROBNAR))
+        deckTwo.append(Creature(House.DIS))
+        deckTwo.append(Creature(House.LOGOS))
 
     gameState = State(deck, deckTwo)
-    activePlayer = gameState.players[0]
-    shuffle(activePlayer.state.deck)
-    shuffle(activePlayer.opponent.state.deck)
+    controllers = [MaxCardsController(gameState.players[0]), MaxCardsController(gameState.players[1])]
 
+    controllers[0].first_turn()
+
+    activeController = 1
+    
     while True:
-        print ("Battleline length = %d" % len(activePlayer.state.battleline))
-        print ("Deck length = %d" % len(activePlayer.state.deck))
-        print ("Hand length = %d" % len(activePlayer.state.hand))
+        print ("Battleline length = %d" % len(controllers[activeController].player.state.battleline))
+        print ("Deck length = %d" % len(controllers[activeController].player.state.deck))
+        print ("Hand length = %d" % len(controllers[activeController].player.state.hand))
 
-        activePlayer.forge_key()
-        if activePlayer.state.keys >= 3:
+        controllers[activeController].turn()
+        
+        if controllers[activeController].player.state.keys >= 3:
             break
-        activePlayer.choose_house(House.BROBNAR)
 
-        for creature in activePlayer.state.battleline:
-            activePlayer.reap(creature)
+        print(len(controllers[activeController].player.state.battleline))
 
-        for i in range(len(activePlayer.state.hand)):
-            activePlayer.play_card(activePlayer.state.hand[0], leftFlank=True)
+        print ('Active player has %d keys and %d amber' % (controllers[activeController].player.state.keys, controllers[activeController].player.state.amber))
 
-        print(len(activePlayer.state.battleline))
+        activeController = (activeController + 1) % 2
 
-        activePlayer.ready_cards()
-        activePlayer.refill_hand()
-
-        print ('Active player has %d keys and %d amber' % (activePlayer.state.keys, activePlayer.state.amber))
-
-        activePlayer = activePlayer.opponent
-
-    if activePlayer == gameState.players[0]:
+    if controllers[activeController].player == gameState.players[0]:
         print('first player won')
     else:
         print('second player won')
