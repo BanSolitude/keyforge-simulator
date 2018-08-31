@@ -24,7 +24,7 @@ class ControllerTests(KeyforgeTest):
 
     def test_takeTurn_selectsAppropriateHouse(self):
         self.controller.turn()
-        self.assertIn(self.mockPlayer.activeHouse, DECK_HOUSES)
+        self.assertIn(self.mockPlayer.state.activeHouse, DECK_HOUSES)
 
 class MaxCardsControllerTests(ControllerTests):
     def setUp(self):
@@ -41,7 +41,7 @@ class MockPlayer():
 
     def choose_house(self, house):
         self.called.add(Steps.CHOOSE)
-        self.activeHouse = house
+        self.state.activeHouse = house
 
     def ready_cards(self):
         self.called.add(Steps.READY)
