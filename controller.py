@@ -38,7 +38,7 @@ class Controller():
     def first_turn_play(self):
         for card in self.player.state.hand:
             if card.house == self.player.activeHouse:
-                self.player.play_card(card) #TODO what about if it's a creature :/
+                self.player.play_card(card, leftFlank= True)
         self.player.ready_cards()
 
     def first_turn_house_decision(self):
