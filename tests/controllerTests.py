@@ -26,6 +26,11 @@ class ControllerTests(KeyforgeTest):
         self.controller.turn()
         self.assertIn(self.mockPlayer.activeHouse, DECK_HOUSES)
 
+class MaxCardsControllerTests(ControllerTests):
+    def setUp(self):
+        super().setUp()
+        self.controller = MaxCardsController(self.mockPlayer)
+
 class MockPlayer():
     def __init__(self):
         self.reset()

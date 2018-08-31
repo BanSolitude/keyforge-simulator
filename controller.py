@@ -43,3 +43,34 @@ class AbstractController():
 
     def first_turn_house_decision(self):
         return self.house_decision()
+
+class MaxCardsController(AbstractController):
+    def house_decision(self):
+        max_count = 0
+        ret_house = None
+        
+        hand_houses = [card.house for card in self.player.state.hand]
+        for house in self.deckHouses:
+            count = hand_houses.count(house)
+            if count > max_count:
+                ret_house = house
+                max_count = count
+        
+        return ret_house
+        
+    def first_turn_house_decision(self):
+        min_count = 8
+        ret_house = None
+        
+        hand_houses = [card.house for card in self.player.state.hand]
+        for house in self.deckHouses:
+            count = hand_houses.count(house)
+            if count < min_count:
+                ret_house = house
+                min_count = count
+        
+        return ret_house
+    
+    def play_and_use_cards(self):
+        for card in [c for c in self.player.state.hand if c.house == self.player.activeHouse]:
+            self.player.play_card(card, leftFlank=True)
