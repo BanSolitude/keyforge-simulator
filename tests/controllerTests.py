@@ -31,6 +31,8 @@ class MaxCardsControllerTests(ControllerTests):
         super().setUp()
         self.controller = MaxCardsController(self.mockPlayer)
 
+    #TODO specific tests to make sure it really does choose the right house.
+
 class MaxReapControllerTests(ControllerTests):
     def setUp(self):
         super().setUp()

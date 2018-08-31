@@ -1,5 +1,7 @@
 import enum
 
+MAX_CARDS_IN_GAME = 72
+
 class Steps(enum.Enum):
     FORGE = 0
     CHOOSE = 1
@@ -12,6 +14,21 @@ def reap_and_play_all(p):
         p.reap(creature)
     for card in [c for c in p.state.hand if c.house == p.state.activeHouse]:
         p.play_card(card, leftFlank=True)
+
+def house_decision_cards_used_or_played(p, deckHouses,  wPlay, wUse):
+    #Deal with negative weights
+    maxScore = min(0, (MAX_CARDS_IN_GAME + 1)*wPlay) + min(0, (MAX_CARDS_IN_GAME + 1)*wUse)
+    retHouse = None
+    
+    handHouses = [card.house for card in p.state.hand]
+    inPlayHouses = [card.house for card in p.state.get_cards_in_play()]
+    for house in deckHouses:
+        score = handHouses.count(house)*wPlay + inPlayHouses.count(house)*wUse
+        if score > maxScore:
+            retHouse = house
+            maxScore = score
+    
+    return retHouse
 
 class AbstractController():
     def __init__(self, player):
@@ -52,61 +69,20 @@ class AbstractController():
 
 class MaxCardsController(AbstractController):
     def house_decision(self):
-        maxCount = 0
-        retHouse = None
-        
-        handHouses = [card.house for card in self.player.state.hand]
-        for house in self.deckHouses:
-            count = handHouses.count(house)
-            if count > maxCount:
-                retHouse = house
-                maxCount = count
-        
-        return retHouse
+        return house_decision_cards_used_or_played(self.player, self.deckHouses, 1, 0)
         
     def first_turn_house_decision(self):
-        minCount = 8
-        retHouse = None
-        
-        handHouses = [card.house for card in self.player.state.hand]
-        for house in self.deckHouses:
-            count = handHouses.count(house)
-            if count < minCount:
-                retHouse = house
-                minCount = count
-        
-        return retHouse
+        return house_decision_cards_used_or_played(self.player, self.deckHouses, -1, 0)
     
     def play_and_use_cards(self):
         reap_and_play_all(self.player)
     
 class MaxReapController(AbstractController):
     def house_decision(self):
-        maxCount = -1
-        retHouse = None
-        
-        inPlayHouses = [card.house for card in self.player.state.get_cards_in_play()]
-        for house in self.deckHouses:
-            count = inPlayHouses.count(house)
-            if count > maxCount:
-                retHouse = house
-                maxCount = count
-        
-        return retHouse
-        
+        return house_decision_cards_used_or_played(self.player, self.deckHouses, 1, 10)
+
     def first_turn_house_decision(self):
-        #More than number of cards in both decks. Not sure if there will be someway to control more cards than this.
-        minCount = 73
-        retHouse = None
-        
-        inPlayHouses = [card.house for card in self.player.state.get_cards_in_play()]
-        for house in self.deckHouses:
-            count = inPlayHouses.count(house)
-            if count < minCount:
-                retHouse = house
-                minCount = count
-        
-        return retHouse
+        return house_decision_cards_used_or_played(self.player, self.deckHouses, -1, -10)
     
     def play_and_use_cards(self):
         reap_and_play_all(self.player)

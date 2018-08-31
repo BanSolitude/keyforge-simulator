@@ -1,8 +1,8 @@
 from state import State
 from cards import Action, Creature, House
-from controller import MaxCardsController
+from controller import MaxCardsController, MaxReapController
 
-ROUNDS = 1000
+ROUNDS = 10000
 
 if __name__ == '__main__':
     deck = []
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     for i in range(ROUNDS):
         gameState = State(deck, deckTwo)
-        controllers = [MaxCardsController(gameState.players[0]), MaxCardsController(gameState.players[1])]
+        controllers = [MaxReapController(gameState.players[0]), MaxReapController(gameState.players[1])]
 
         controllers[0].first_turn()
 
