@@ -48,6 +48,9 @@ class MockPlayer():
         self.called = set()
         self.cardsPlayed = 0
 
+    def play_card(self, card):
+        self.cardsPlayed += 1
+
     def play_card(self, card, **kwargs):
         self.cardsPlayed += 1
 
