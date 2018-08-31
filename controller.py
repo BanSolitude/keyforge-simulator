@@ -72,5 +72,7 @@ class MaxCardsController(AbstractController):
         return ret_house
     
     def play_and_use_cards(self):
+        for creature in [c for c in self.player.state.battleline if c.house == self.player.activeHouse]:
+            self.player.reap(creature)
         for card in [c for c in self.player.state.hand if c.house == self.player.activeHouse]:
             self.player.play_card(card, leftFlank=True)

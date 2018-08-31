@@ -58,6 +58,7 @@ class MockPlayer():
 
 class MockState():
     def __init__(self):
+        self.battleline = []
         self.deck = []
         self.hand = []
         self.cardsDrawn = 0
