@@ -7,7 +7,7 @@ class Steps(enum.Enum):
     READY = 3
     DRAW = 4
 
-class Controller():
+class AbstractController():
     def __init__(self, player):
         self.player = player
         self.deckHouses = set()

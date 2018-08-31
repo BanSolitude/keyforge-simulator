@@ -5,9 +5,9 @@ DECK_HOUSES = [House.BROBNAR, House.DIS, House.LOGOS]
 
 class ControllerTests(KeyforgeTest):
     def setUp(self):
-        super().setUp() #maybe?
+        super().setUp()
         self.mockPlayer = MockPlayer()
-        self.controller = Controller(self.mockPlayer)
+        self.controller = AbstractController(self.mockPlayer)
 
     def test_takeTurn_appropriateFunctionsCalled(self):
         shouldCall = set([Steps.FORGE, Steps.CHOOSE, Steps.READY, Steps.DRAW])
