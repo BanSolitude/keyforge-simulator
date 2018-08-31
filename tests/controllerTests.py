@@ -31,6 +31,11 @@ class MaxCardsControllerTests(ControllerTests):
         super().setUp()
         self.controller = MaxCardsController(self.mockPlayer)
 
+class MaxReapControllerTests(ControllerTests):
+    def setUp(self):
+        super().setUp()
+        self.controller = MaxReapController(self.mockPlayer)
+
 class MockPlayer():
     def __init__(self):
         self.reset()
@@ -68,3 +73,6 @@ class MockState():
 
     def draw(self, amount):
         self.cardsDrawn += amount
+    
+    def get_cards_in_play(self):
+        return []
